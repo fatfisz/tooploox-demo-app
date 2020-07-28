@@ -1,5 +1,13 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
+
+import { Header } from 'components/Header';
 
 export default function Index(): ReactElement {
-  return <>Welcome to the GitHub profile viewer 😉</>;
+  const [login, setLogin] = useState<string>();
+  return (
+    <>
+      <Header onLoginChange={setLogin} />
+      <pre>State: {JSON.stringify({ login }, null, 2)}</pre>
+    </>
+  );
 }

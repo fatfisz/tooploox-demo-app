@@ -1,19 +1,31 @@
-import { ReactElement, ReactNode } from 'react';
+import cx from 'classnames';
+import { ReactElement, ReactNode, createElement } from 'react';
+import css from 'styled-jsx/css';
 
 import { useTextStyles } from 'design-system/Theme';
 
-export function Heading({ children }: { children: ReactNode }): ReactElement {
-  const headingStyles = useTextStyles('heading');
+const headingStyles = css.resolve`
+  display: block;
+  margin: 0;
+`;
+
+export function Heading({
+  children,
+  level,
+}: {
+  children: ReactNode;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+}): ReactElement {
+  const textStyles = useTextStyles('heading');
   return (
     <>
-      <h2 className={headingStyles.className}>{children}</h2>
-      <style jsx>{`
-        h2 {
-          display: block;
-          margin: 0;
-        }
-      `}</style>
+      {createElement(
+        `h${level}`,
+        { className: cx(headingStyles.className, textStyles.className) },
+        children,
+      )}
       {headingStyles.styles}
+      {textStyles.styles}
     </>
   );
 }

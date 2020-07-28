@@ -45,7 +45,7 @@ function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement 
           <Image alt="user avatar" borderRadius="large" size="avatar" src={avatarUrl} />
         </Column>
         <Column>
-          <Heading>{name}</Heading>
+          <Heading level={1}>{name}</Heading>
         </Column>
       </Columns>
       {description && <Text>{description}</Text>}
@@ -56,7 +56,7 @@ function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement 
 function UserRepositories({ repositories }: { repositories: UserRepositoriesData }): ReactElement {
   return (
     <Stack space="medium">
-      <Heading>Top repositories</Heading>
+      <Heading level={2}>Top repositories</Heading>
       <Stack space="small">
         {repositories.map(({ name, url }) => (
           <Repository key={url} name={name} url={url} />

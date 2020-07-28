@@ -47,6 +47,31 @@ export function useTextStyles(
   `;
 }
 
+type TextPseudoSelector = 'placeholder';
+
+export function useTextPseudoSelectorStyles(
+  pseudoSelector: TextPseudoSelector,
+  text: Text,
+  extraProperties?: Partial<TextProperties>,
+): {
+  className: string;
+  styles: string;
+} {
+  const theme = useTheme();
+  const textProperties = { ...theme.text[text], ...extraProperties };
+  return css.resolve`
+    ::${pseudoSelector} {
+      color: ${theme.color[textProperties.color]};
+      font-family: ${textProperties.family};
+      font-size: ${textProperties.size};
+      font-style: ${textProperties.style};
+      font-weight: ${textProperties.weight};
+      letter-spacing: ${textProperties.letterSpacing};
+      line-height: ${textProperties.lineHeight};
+    }
+  `;
+}
+
 export function ThemeHead(): ReactElement {
   const { color, fontLinks } = useTheme();
   return (

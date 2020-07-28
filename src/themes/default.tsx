@@ -9,6 +9,7 @@ export const defaultTheme = {
     panelBackground: '#ffffff',
     inputBackground: '#f0f3f4',
     textHighEmphasis: 'rgba(0, 0, 0, 0.87)',
+    textDisabled: '#9e9e9e',
     textDark: '#4f4f4f',
     textLight: '#828282',
     textLink: '#2f80ed',

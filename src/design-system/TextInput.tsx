@@ -1,6 +1,7 @@
+import cx from 'classnames';
 import { ChangeEvent as ReactChangeEvent, ReactElement, useCallback } from 'react';
 
-import { useTextStyles, useTheme } from 'design-system/Theme';
+import { useTextPseudoSelectorStyles, useTextStyles, useTheme } from 'design-system/Theme';
 
 export function TextInput({
   placeholder,
@@ -15,6 +16,7 @@ export function TextInput({
 }): ReactElement {
   const theme = useTheme();
   const inputStyles = useTextStyles('basic');
+  const placeholderStyles = useTextPseudoSelectorStyles('placeholder', 'basic');
   const handleChange = useCallback(
     (event: ReactChangeEvent<HTMLInputElement>) => onChange(event.target.value),
     [onChange],
@@ -23,7 +25,7 @@ export function TextInput({
     <>
       <div className="input-wrapper">
         <input
-          className={inputStyles.className}
+          className={cx(inputStyles.className, placeholderStyles.className)}
           placeholder={placeholder}
           type="text"
           value={value}
@@ -47,8 +49,13 @@ export function TextInput({
           padding: 0 ${theme.spacing.xsmall};
           width: 100%;
         }
+
+        input::placeholder {
+          color: ${theme.color.textDisabled};
+        }
       `}</style>
       {inputStyles.styles}
+      {placeholderStyles.styles}
     </>
   );
 }

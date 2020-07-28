@@ -12,7 +12,7 @@ export function useGithubUserInfo(login: string | undefined): UserInfoData | und
   useEffect(() => {
     const handle = setTimeout(() => {
       setData({
-        avatarUrl: 'https://placehold.it/64x64',
+        avatarUrl: 'https://placehold.it/128x128',
         description: "He's a good boy",
         name: login ? `Bront (${login})` : 'Bront',
       });

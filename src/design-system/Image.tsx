@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { BorderRadius, Size } from 'design-system/Theme';
+import { BorderRadius, Size, useTheme } from 'design-system/Theme';
 
 export function Image({
   alt,
@@ -13,5 +13,16 @@ export function Image({
   size: Size;
   src: string;
 }): ReactElement {
-  return <img alt={alt} src={src} data-borderRadius={borderRadius} data-size={size} />;
+  const theme = useTheme();
+  return (
+    <img
+      alt={alt}
+      src={src}
+      style={{
+        borderRadius: borderRadius && theme.borderRadius[borderRadius],
+        maxHeight: theme.size[size],
+        maxWidth: theme.size[size],
+      }}
+    />
+  );
 }

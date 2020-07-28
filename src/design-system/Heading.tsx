@@ -10,9 +10,11 @@ const headingStyles = css.resolve`
 `;
 
 export function Heading({
+  align = 'left',
   children,
   level,
 }: {
+  align?: 'left' | 'right' | 'center';
   children: ReactNode;
   level: 1 | 2 | 3 | 4 | 5 | 6;
 }): ReactElement {
@@ -21,7 +23,12 @@ export function Heading({
     <>
       {createElement(
         `h${level}`,
-        { className: cx(headingStyles.className, textStyles.className) },
+        {
+          className: cx(headingStyles.className, textStyles.className),
+          style: {
+            textAlign: align,
+          },
+        },
         children,
       )}
       {headingStyles.styles}

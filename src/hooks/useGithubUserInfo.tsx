@@ -10,6 +10,10 @@ export function useGithubUserInfo(login: string | undefined): UserInfoData | und
   const [data, setData] = useState<UserInfoData>();
 
   useEffect(() => {
+    if (!login) {
+      return;
+    }
+
     const handle = setTimeout(() => {
       setData({
         avatarUrl: 'https://placehold.it/128x128',

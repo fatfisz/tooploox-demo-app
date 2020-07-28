@@ -8,6 +8,7 @@ import {
   Heading,
   Image,
   Link,
+  NoBreak,
   Stack,
   Text,
 } from 'design-system';
@@ -24,14 +25,17 @@ export function Content({ login }: { login: string | undefined }): ReactElement 
   return (
     <Box padding="medium">
       <ContentBlock>
-        <Stack space="large">
-          {userInfo && (
-            <>
-              <UserInfo {...userInfo} />
-              {repositories && <UserRepositories repositories={repositories} />}
-            </>
-          )}
-        </Stack>
+        {userInfo ? (
+          <Stack space="large">
+            <UserInfo {...userInfo} />
+            {repositories && <UserRepositories repositories={repositories} />}
+          </Stack>
+        ) : (
+          <Heading align="center" level={2}>
+            Type a username and click &quot;Search&quot; to get information{' '}
+            <NoBreak>about a GitHub user</NoBreak>
+          </Heading>
+        )}
       </ContentBlock>
     </Box>
   );

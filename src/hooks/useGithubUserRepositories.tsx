@@ -13,6 +13,10 @@ export function useGithubUserRepositories(
   const [data, setData] = useState<UserRepositoriesData>();
 
   useEffect(() => {
+    if (!login) {
+      return;
+    }
+
     const handle = setTimeout(() => {
       setData([
         { name: 'react', url: 'https://github.com/facebook/react' },

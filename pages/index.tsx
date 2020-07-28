@@ -1,13 +1,15 @@
 import { ReactElement, useState } from 'react';
 
+import { Content } from 'components/Content';
 import { Header } from 'components/Header';
+import { Stack } from 'design-system';
 
 export default function Index(): ReactElement {
   const [login, setLogin] = useState<string>();
   return (
-    <>
+    <Stack>
       <Header onLoginChange={setLogin} />
-      <pre>State: {JSON.stringify({ login }, null, 2)}</pre>
-    </>
+      <Content login={login} />
+    </Stack>
   );
 }

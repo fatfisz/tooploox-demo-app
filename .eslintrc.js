@@ -33,6 +33,7 @@ module.exports = {
     'react/prop-types': 'off', // We're using TS for prop validation
     'react/react-in-jsx-scope': 'off', // Next.js injects React so we don't have to check that
 
+    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/consistent-type-definitions': ['warn', 'interface'],
     '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

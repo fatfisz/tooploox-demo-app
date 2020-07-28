@@ -7,6 +7,7 @@ export { Form } from 'design-system/Form';
 export { Heading } from 'design-system/Heading';
 export { Image } from 'design-system/Image';
 export { Link } from 'design-system/Link';
+export { Loader } from 'design-system/Loader';
 export { NoBreak } from 'design-system/NoBreak';
 export { Stack } from 'design-system/Stack';
 export { Text } from 'design-system/Text';

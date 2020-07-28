@@ -10,3 +10,4 @@ export { Link } from 'design-system/Link';
 export { Stack } from 'design-system/Stack';
 export { Text } from 'design-system/Text';
 export { TextInput } from 'design-system/TextInput';
+export { ThemeHead } from 'design-system/Theme';

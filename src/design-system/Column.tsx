@@ -9,5 +9,16 @@ export function Column({
   children: ReactNode;
   width?: Width;
 }): ReactElement {
-  return <div data-width={width}>{children}</div>;
+  return (
+    <div
+      style={{
+        flexBasis: width === 'fluid' ? 0 : 'auto',
+        flexGrow: width === 'fluid' ? 1 : 0,
+        flexShrink: 0,
+        minWidth: 0,
+      }}
+    >
+      {children}
+    </div>
+  );
 }

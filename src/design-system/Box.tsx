@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 
-import { BorderRadius, Color, Shadow, Spacing } from 'design-system/Theme';
+import { BorderRadius, Color, Shadow, Spacing, useTheme } from 'design-system/Theme';
 
 export function Box({
   background,
@@ -15,12 +15,15 @@ export function Box({
   padding?: Spacing;
   shadow?: Shadow;
 }): ReactElement {
+  const theme = useTheme();
   return (
     <div
-      data-background={background}
-      data-border-radius={borderRadius}
-      data-padding={padding}
-      data-shadow={shadow}
+      style={{
+        background: background && theme.color[background],
+        borderRadius: borderRadius && theme.borderRadius[borderRadius],
+        boxShadow: shadow && theme.shadow[shadow],
+        padding: padding && theme.spacing[padding],
+      }}
     >
       {children}
     </div>

@@ -26,10 +26,9 @@ function addSvgRule(config) {
     use: [
       ...moduleLoaders,
       {
-        loader: 'react-svg-loader',
+        loader: '@svgr/webpack',
         options: {
-          jsx: true,
-          svgo: {
+          svgoConfig: {
             floatPrecision: 2,
             multipass: true,
             plugins: [

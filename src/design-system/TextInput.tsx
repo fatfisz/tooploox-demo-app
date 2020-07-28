@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { ChangeEvent as ReactChangeEvent, ReactElement, useCallback } from 'react';
 
 import { useTextPseudoSelectorStyles, useTextStyles, useTheme } from 'design-system/Theme';
+import Search from 'icons/search.svg';
 
 export function TextInput({
   placeholder,
@@ -24,13 +25,17 @@ export function TextInput({
   return (
     <>
       <div className="input-wrapper">
+        {search && (
+          <div className="icon-wrapper">
+            <Search fill={theme.color.textDark} />
+          </div>
+        )}
         <input
           className={cx(inputStyles.className, placeholderStyles.className)}
           placeholder={placeholder}
           type="text"
           value={value}
           onChange={handleChange}
-          data-search={search}
         />
       </div>
       <style jsx>{`
@@ -47,11 +52,25 @@ export function TextInput({
           color: ${theme.color.textDark};
           height: 100%;
           padding: 0 ${theme.spacing.xsmall};
+          ${search &&
+          `
+            padding-left: calc(2 * ${theme.spacing.xxsmall} + ${theme.size.controlIcon});
+          `};
           width: 100%;
         }
 
         input::placeholder {
           color: ${theme.color.textDisabled};
+        }
+
+        .icon-wrapper {
+          display: flex;
+          padding: 0 ${theme.spacing.xxsmall};
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translate(0, -50%);
+          width: calc(2 * ${theme.spacing.xxsmall} + ${theme.size.controlIcon});
         }
       `}</style>
       {inputStyles.styles}

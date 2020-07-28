@@ -22,8 +22,10 @@ export const defaultTheme = {
     avatar: '64px',
     contentBlock: '940px',
     control: '36px',
+    controlIcon: '16px',
   },
   spacing: {
+    xxsmall: '8px',
     xsmall: '12px',
     small: '16px',
     medium: '24px',

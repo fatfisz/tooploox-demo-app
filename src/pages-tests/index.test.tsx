@@ -95,3 +95,18 @@ it('displays an error message when the user does not exist', async () => {
     expectErrorState();
   });
 });
+
+it('displays an error message when a server error occurs', async () => {
+  render(<Index />);
+  typeUsernameAndSubmit('server-error');
+
+  expectEmptyState();
+
+  await waitFor(() => {
+    expectLoader();
+  });
+
+  await waitFor(() => {
+    expectErrorState();
+  });
+});

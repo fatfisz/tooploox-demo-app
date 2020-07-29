@@ -1,6 +1,10 @@
-export type TestUsername = 'basic' | 'one-repo' | 'no-repos' | 'missing-bio';
+type TestValidUsername = 'basic' | 'one-repo' | 'no-repos' | 'missing-bio';
 
-export type TestMissingUsername = 'missing-user';
+type TestMissingUsername = 'missing-user';
+
+export const testServerErrorUsername = 'server-error';
+
+export type TestUsername = TestValidUsername | TestMissingUsername | typeof testServerErrorUsername;
 
 interface TestUserInfoData {
   avatar_url: string;

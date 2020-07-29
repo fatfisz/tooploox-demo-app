@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TestMissingUsername, TestUsername } from 'test/serverFixtures';
+import { TestUsername } from 'test/serverFixtures';
 
 export function expectEmptyState(): void {
   expect(screen.queryAllByRole('heading')).toHaveLength(1);
@@ -61,7 +61,7 @@ export function getLinks(): { name: string | null; url: string }[] {
   }));
 }
 
-export function typeUsernameAndSubmit(username: TestUsername | TestMissingUsername): void {
+export function typeUsernameAndSubmit(username: TestUsername): void {
   userEvent.type(screen.getByRole('textbox'), username);
   userEvent.click(screen.getByRole('button'));
 }

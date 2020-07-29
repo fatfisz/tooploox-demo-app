@@ -28,3 +28,11 @@ After the server has started, you can go to http://localhost:3000 to use the app
 - `types`: runs the TypeScript checks
 - `test`: runs the tests
 - `build` and `start`: builds and starts the production version of the Next.js app, respectively
+
+## Tool stack
+
+- [TypeScript](https://github.com/Microsoft/TypeScript): used almost everywhere in the project, with strict checks by default
+- [Next.js](https://github.com/vercel/next.js): a framework for creating React apps
+- [styled-jsx](https://github.com/vercel/styled-jsx): built into Next.js, a CSS-in-JS tool
+- [ESLint](https://github.com/eslint/eslint), [Prettier](https://github.com/prettier/prettier): linting and formatting
+- [Jest](https://github.com/facebook/jest), [testing-library](https://github.com/testing-library), [msw](https://github.com/mswjs/msw): testing

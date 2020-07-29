@@ -4,10 +4,11 @@ import Index from '../../pages/index';
 import {
   expectDescription,
   expectEmptyState,
-  expectErrorState,
   expectLoader,
   expectNoDescription,
   expectNoRepositories,
+  expectNotFoundErrorState,
+  expectServerErrorState,
   expectTopRepositories,
   expectUserName,
   typeUsernameAndSubmit,
@@ -92,7 +93,7 @@ it('displays an error message when the user does not exist', async () => {
   });
 
   await waitFor(() => {
-    expectErrorState();
+    expectNotFoundErrorState();
   });
 });
 
@@ -107,6 +108,6 @@ it('displays an error message when a server error occurs', async () => {
   });
 
   await waitFor(() => {
-    expectErrorState();
+    expectServerErrorState();
   });
 });

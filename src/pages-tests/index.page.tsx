@@ -9,7 +9,13 @@ export function expectEmptyState(): void {
   expect(screen.queryByTestId('loader')).toBeNull();
 }
 
-export function expectErrorState(): void {
+export function expectNotFoundErrorState(): void {
+  expect(screen.queryAllByRole('heading')).toHaveLength(1);
+  expect(getSubHeading()).toHaveTextContent('could not be found');
+  expect(screen.queryByTestId('loader')).toBeNull();
+}
+
+export function expectServerErrorState(): void {
   expect(screen.queryAllByRole('heading')).toHaveLength(1);
   expect(getSubHeading()).toHaveTextContent('An error occurred');
   expect(screen.queryByTestId('loader')).toBeNull();

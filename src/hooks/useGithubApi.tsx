@@ -39,7 +39,10 @@ export function useGithubApi<Result>({
 
       if (!response.ok) {
         // At this point some logging could be used, eg. with Sentry
-        setQueryResult({ status: 'error' });
+        setQueryResult({
+          status: 'error',
+          error: Object.assign(new Error(response.statusText), { response }),
+        });
         return;
       }
 

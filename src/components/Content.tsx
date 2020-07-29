@@ -28,20 +28,35 @@ export function Content({ login }: { login: string | undefined }): ReactElement 
   return (
     <Box padding="medium">
       <ContentBlock>
-        <ContentBody userInfo={userInfo} repositories={repositories} />
+        <ContentBody login={login} userInfo={userInfo} repositories={repositories} />
       </ContentBlock>
     </Box>
   );
 }
 
 function ContentBody({
+  login,
   repositories,
   userInfo,
 }: {
+  login: string | undefined;
   repositories: QueryResult<UserRepositoriesData>;
   userInfo: QueryResult<UserInfoData>;
 }): ReactElement {
   if (userInfo.status === 'error' || repositories.status === 'error') {
+    const isUserInfoMissingOrNotError =
+      userInfo.error?.response?.status === 404 || userInfo.status !== 'error';
+    const isUserRepositoriesMissingOrNotError =
+      repositories.error?.response?.status === 404 || repositories.status !== 'error';
+    if (isUserInfoMissingOrNotError && isUserRepositoriesMissingOrNotError) {
+      return (
+        <Heading align="center" level={2}>
+          User &quot;{login}&quot; could not be found 😔
+          <br />
+          Try some other username, eg. &quot;kentcdodds&quot;
+        </Heading>
+      );
+    }
     return (
       <Heading align="center" level={2}>
         An error occurred while retrieving the profile

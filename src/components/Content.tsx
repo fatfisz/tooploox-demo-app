@@ -81,12 +81,15 @@ function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement 
           <Heading level={1}>{name}</Heading>
         </Column>
       </Columns>
-      {description && <Text>{description}</Text>}
+      {description && <Text data-testid="description">{description}</Text>}
     </Stack>
   );
 }
 
 function UserRepositories({ repositories }: { repositories: UserRepositoriesData }): ReactElement {
+  if (repositories.length === 0) {
+    return <Heading level={2}>No repositories found for this user</Heading>;
+  }
   return (
     <Stack space="medium">
       <Heading level={2}>Top repositories</Heading>

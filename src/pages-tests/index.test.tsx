@@ -2,11 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 import Index from '../../pages/index';
 import {
+  expectDescription,
   expectEmptyState,
   expectErrorState,
   expectLoader,
+  expectNoDescription,
+  expectNoRepositories,
   expectTopRepositories,
-  getMainHeading,
+  expectUserName,
   typeUsernameAndSubmit,
 } from 'pages-tests/index.page';
 
@@ -29,12 +32,52 @@ it('displays the user profile after submitting the username', async () => {
   });
 
   await waitFor(() => {
-    expect(getMainHeading()).toHaveTextContent('Foo Bar');
+    expectUserName('Foo Bar');
+    expectDescription('A bio of a basic user');
     expectTopRepositories([
-      { name: 'react', url: 'https://github.com/facebook/react' },
-      { name: 'TypeScript', url: 'https://github.com/microsoft/typescript' },
-      { name: 'eslint', url: 'https://github.com/eslint/eslint' },
+      { name: 'first', url: 'https://github.com/basic/first' },
+      { name: 'second', url: 'https://github.com/basic/second' },
+      { name: 'third', url: 'https://github.com/basic/third' },
     ]);
+  });
+});
+
+describe('profile edge cases', () => {
+  it('displays a user with only one repository', async () => {
+    render(<Index />);
+    typeUsernameAndSubmit('one-repo');
+
+    await waitFor(() => {
+      expectUserName('Foo Bar');
+      expectDescription('A bio of a user with only one repository');
+      expectTopRepositories([{ name: 'only', url: 'https://github.com/one-repo/only' }]);
+    });
+  });
+
+  it('displays a user with no repositories', async () => {
+    render(<Index />);
+    typeUsernameAndSubmit('no-repos');
+
+    await waitFor(() => {
+      expectUserName('Foo Bar');
+      expectDescription('A bio of a user with no repositories');
+      expectNoRepositories();
+    });
+  });
+
+  it('displays a user without a description', async () => {
+    render(<Index />);
+    typeUsernameAndSubmit('missing-bio');
+
+    await waitFor(() => {
+      expectUserName('Foo Bar');
+      expectNoDescription();
+      expectTopRepositories([
+        { name: 'first', url: 'https://github.com/missing-bio/first' },
+        { name: 'second', url: 'https://github.com/missing-bio/second' },
+        { name: 'third', url: 'https://github.com/missing-bio/third' },
+      ]);
+    });
   });
 });
 

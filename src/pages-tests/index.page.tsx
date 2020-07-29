@@ -20,9 +20,26 @@ export function expectLoader(): void {
   expect(screen.queryAllByTestId('loader')).toHaveLength(1);
 }
 
+export function expectUserName(name: string): void {
+  expect(getMainHeading()).toHaveTextContent(name);
+}
+
+export function expectDescription(description: string): void {
+  expect(screen.getByTestId('description')).toHaveTextContent(description);
+}
+
+export function expectNoDescription(): void {
+  expect(screen.queryByTestId('description')).toBeNull();
+}
+
 export function expectTopRepositories(repositories: { name: string; url: string }[]): void {
   expect(getSubHeading()).toHaveTextContent('Top repositories');
   expect(getLinks()).toEqual(repositories);
+}
+
+export function expectNoRepositories(): void {
+  expect(getSubHeading()).toHaveTextContent('No repositories found');
+  expect(getLinks()).toEqual([]);
 }
 
 export function getMainHeading(): HTMLElement {

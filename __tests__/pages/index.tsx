@@ -1,47 +1,41 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Index from '../../pages/index';
 
-it('displays a textbox and a submit button', () => {
+it('initially displays a textbox, a submit button, and an empty state message', () => {
   render(<Index />);
 
   expect(screen.queryAllByRole('textbox')).toHaveLength(1);
   expect(screen.queryAllByRole('button')).toHaveLength(1);
+  expectEmptyState();
 });
 
-it('displays the username in the main heading when typed and submitted', () => {
+it('displays the user profile after submitting the username', async () => {
   render(<Index />);
   userEvent.type(screen.getByRole('textbox'), 'foobar');
   userEvent.click(screen.getByRole('button'));
 
   expectEmptyState();
 
-  act(() => {
-    jest.runAllTimers();
+  await waitFor(() => {
+    expect(getMainHeading()).toHaveTextContent('Brant Bront Brent');
+    expectTopRepositories([
+      { name: 'react', url: 'https://github.com/facebook/react' },
+      { name: 'TypeScript', url: 'https://github.com/microsoft/typescript' },
+      { name: 'eslint', url: 'https://github.com/eslint/eslint' },
+    ]);
   });
-
-  expect(screen.queryAllByRole('heading')).toHaveLength(2);
-  expect(getMainHeading()).toHaveTextContent('foobar');
-  expect(getSubHeading()).toHaveTextContent('Top repositories');
-});
-
-it('does not display the username in the main heading unless submitted', () => {
-  render(<Index />);
-  userEvent.type(screen.getByRole('textbox'), 'foobar');
-
-  expectEmptyState();
-
-  act(() => {
-    jest.runAllTimers();
-  });
-
-  expectEmptyState();
 });
 
 function expectEmptyState(): void {
   expect(screen.queryAllByRole('heading')).toHaveLength(1);
   expect(getSubHeading()).toHaveTextContent('Type a username');
+}
+
+function expectTopRepositories(repositories: { name: string; url: string }[]): void {
+  expect(getSubHeading()).toHaveTextContent('Top repositories');
+  expect(getLinks()).toEqual(repositories);
 }
 
 function getMainHeading(): HTMLElement {
@@ -54,4 +48,11 @@ function getSubHeading(): HTMLElement {
   const headings = screen.queryAllByRole('heading').filter((heading) => heading.tagName === 'H2');
   expect(headings).toHaveLength(1);
   return headings[0];
+}
+
+function getLinks(): { name: string | null; url: string }[] {
+  return (screen.queryAllByRole('link') as HTMLAnchorElement[]).map((link) => ({
+    name: link.textContent,
+    url: link.href,
+  }));
 }

@@ -30,9 +30,11 @@
     "eslint-plugin-react": "7.20.4",
     "eslint-plugin-react-hooks": "4.0.8",
     "jest": "26.1.0",
+    "msw": "0.19.5",
     "prettier": "2.0.5",
     "ts-jest": "26.1.4",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "whatwg-fetch": "3.2.0"
   },
   "scripts": {
     "build": "next build",

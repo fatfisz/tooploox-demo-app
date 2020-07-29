@@ -25,10 +25,10 @@ export function Content({ login }: { login: string | undefined }): ReactElement 
   return (
     <Box padding="medium">
       <ContentBlock>
-        {userInfo ? (
+        {userInfo.data ? (
           <Stack space="large">
-            <UserInfo {...userInfo} />
-            {repositories && <UserRepositories repositories={repositories} />}
+            <UserInfo {...userInfo.data} />
+            {repositories.data && <UserRepositories repositories={repositories.data} />}
           </Stack>
         ) : (
           <Heading align="center" level={2}>

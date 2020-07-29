@@ -1,4 +1,16 @@
-import { useEffect, useState } from 'react';
+/**
+ * Notes:
+ * https://docs.github.com/en/rest/reference/users#get-a-user
+ */
+
+import { useGithubApi } from 'hooks/useGithubApi';
+import { QueryResult } from 'types/QueryResult';
+
+interface RawUserInfoData {
+  avatar_url: string;
+  bio: string;
+  name: string;
+}
 
 export interface UserInfoData {
   avatarUrl: string;
@@ -6,26 +18,18 @@ export interface UserInfoData {
   name: string;
 }
 
-export function useGithubUserInfo(login: string | undefined): UserInfoData | undefined {
-  const [data, setData] = useState<UserInfoData>();
+export function useGithubUserInfo(login: string | undefined): QueryResult<UserInfoData> {
+  return useGithubApi({
+    url: `https://api.github.com/users/${encodeURIComponent(login as string)}`,
+    processData,
+    enabled: login,
+  });
+}
 
-  useEffect(() => {
-    if (!login) {
-      return;
-    }
-
-    const handle = setTimeout(() => {
-      setData({
-        avatarUrl: 'https://placehold.it/128x128',
-        description: "He's a good boy",
-        name: login ? `Bront (${login})` : 'Bront',
-      });
-    }, 1000);
-
-    return (): void => {
-      clearTimeout(handle);
-    };
-  }, [login]);
-
-  return data;
+function processData({ avatar_url, bio, name }: RawUserInfoData): UserInfoData {
+  return {
+    avatarUrl: avatar_url,
+    description: bio,
+    name,
+  };
 }

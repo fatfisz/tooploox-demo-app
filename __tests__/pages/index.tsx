@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Index from '../../pages/index';
+import { TestMissingUsername, TestUsername } from 'test/serverFixtures';
 
 it('initially displays a textbox, a submit button, and an empty state message', () => {
   render(<Index />);
@@ -13,13 +14,12 @@ it('initially displays a textbox, a submit button, and an empty state message', 
 
 it('displays the user profile after submitting the username', async () => {
   render(<Index />);
-  userEvent.type(screen.getByRole('textbox'), 'foobar');
-  userEvent.click(screen.getByRole('button'));
+  typeUsernameAndSubmit('basic');
 
   expectEmptyState();
 
   await waitFor(() => {
-    expect(getMainHeading()).toHaveTextContent('Brant Bront Brent');
+    expect(getMainHeading()).toHaveTextContent('Foo Bar');
     expectTopRepositories([
       { name: 'react', url: 'https://github.com/facebook/react' },
       { name: 'TypeScript', url: 'https://github.com/microsoft/typescript' },
@@ -55,4 +55,9 @@ function getLinks(): { name: string | null; url: string }[] {
     name: link.textContent,
     url: link.href,
   }));
+}
+
+function typeUsernameAndSubmit(username: TestUsername | TestMissingUsername): void {
+  userEvent.type(screen.getByRole('textbox'), username);
+  userEvent.click(screen.getByRole('button'));
 }

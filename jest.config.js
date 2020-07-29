@@ -14,7 +14,11 @@ module.exports = {
   },
   preset: 'ts-jest',
   restoreMocks: true,
-  setupFilesAfterEnv: ['./jest.setup.tsx'],
+  setupFilesAfterEnv: [
+    '<rootDir>/src/test/react-testing-library.setup.tsx',
+    '<rootDir>/src/test/react.setup.tsx',
+    '<rootDir>/src/test/styled-jsx.setup.tsx',
+  ],
   testPathIgnorePatterns: ['<rootDir>/\\.next/', '<rootDir>/node_modules/'],
   timers: 'fake',
 };

@@ -35,7 +35,7 @@ export function useGithubUserRepositories(
   login: string | undefined,
 ): QueryResult<UserRepositoriesData> {
   return useGithubApi({
-    url: `https://api.github.com/users/${encodeURIComponent(login as string)}/repos?${queryParams}`,
+    url: `https://api.github.com/users/${encodeURIComponent(String(login))}/repos?${queryParams}`,
     processData,
     enabled: login,
   });

@@ -60,11 +60,11 @@ function ContentBody({
   }
   return (
     <Stack space="large">
-      <UserInfo {...(userInfo.data as UserInfoData)} />
+      <UserInfo {...userInfo.data!} />
       {repositories.status === 'loading' ? (
         <Loader />
       ) : (
-        <UserRepositories repositories={repositories.data as UserRepositoriesData} />
+        <UserRepositories repositories={repositories.data!} />
       )}
     </Stack>
   );

@@ -20,7 +20,7 @@ export interface UserInfoData {
 
 export function useGithubUserInfo(login: string | undefined): QueryResult<UserInfoData> {
   return useGithubApi({
-    url: `https://api.github.com/users/${encodeURIComponent(login as string)}`,
+    url: `https://api.github.com/users/${encodeURIComponent(String(login))}`,
     processData,
     enabled: login,
   });

@@ -19,6 +19,7 @@ import {
   UserRepositoriesData,
   UserRepositoryData,
 } from 'hooks/useGithubUserRepositories';
+import { useWhitespaceToBr } from 'hooks/useWhitespaceToBr';
 import { QueryResult } from 'types/QueryResult';
 
 export function Content({ login }: { login: string | undefined }): ReactElement {
@@ -71,6 +72,7 @@ function ContentBody({
 }
 
 function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement | null {
+  const splitName = useWhitespaceToBr(name);
   return (
     <Stack space="medium">
       <Columns alignY="bottom" space="small">
@@ -78,7 +80,7 @@ function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement 
           <Image alt="user avatar" borderRadius="large" size="avatar" src={avatarUrl} />
         </Column>
         <Column>
-          <Heading level={1}>{name}</Heading>
+          <Heading level={1}>{splitName}</Heading>
         </Column>
       </Columns>
       {description && <Text data-testid="description">{description}</Text>}

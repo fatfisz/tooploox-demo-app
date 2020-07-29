@@ -21,7 +21,7 @@ export function expectLoader(): void {
 }
 
 export function expectUserName(name: string): void {
-  expect(getMainHeading()).toHaveTextContent(name);
+  expect(getMainHeading()).toHaveTextContent(name.replace(/\s/g, ''));
 }
 
 export function expectDescription(description: string): void {

@@ -8,6 +8,7 @@ import {
   Heading,
   Image,
   Link,
+  Loader,
   NoBreak,
   Stack,
   Text,
@@ -18,6 +19,7 @@ import {
   UserRepositoriesData,
   UserRepositoryData,
 } from 'hooks/useGithubUserRepositories';
+import { QueryResult } from 'types/QueryResult';
 
 export function Content({ login }: { login: string | undefined }): ReactElement {
   const userInfo = useGithubUserInfo(login);
@@ -25,19 +27,39 @@ export function Content({ login }: { login: string | undefined }): ReactElement 
   return (
     <Box padding="medium">
       <ContentBlock>
-        {userInfo.data ? (
-          <Stack space="large">
-            <UserInfo {...userInfo.data} />
-            {repositories.data && <UserRepositories repositories={repositories.data} />}
-          </Stack>
-        ) : (
-          <Heading align="center" level={2}>
-            Type a username and click &quot;Search&quot; to get information{' '}
-            <NoBreak>about a GitHub user</NoBreak>
-          </Heading>
-        )}
+        <ContentBody userInfo={userInfo} repositories={repositories} />
       </ContentBlock>
     </Box>
+  );
+}
+
+function ContentBody({
+  repositories,
+  userInfo,
+}: {
+  repositories: QueryResult<UserRepositoriesData>;
+  userInfo: QueryResult<UserInfoData>;
+}): ReactElement {
+  if (userInfo.status === 'idle' || repositories.status === 'idle') {
+    return (
+      <Heading align="center" level={2}>
+        Type a username and click &quot;Search&quot; to get information{' '}
+        <NoBreak>about a GitHub user</NoBreak>
+      </Heading>
+    );
+  }
+  if (userInfo.status === 'loading') {
+    return <Loader />;
+  }
+  return (
+    <Stack space="large">
+      <UserInfo {...(userInfo.data as UserInfoData)} />
+      {repositories.status === 'loading' ? (
+        <Loader />
+      ) : (
+        <UserRepositories repositories={repositories.data as UserRepositoriesData} />
+      )}
+    </Stack>
   );
 }
 

@@ -6,6 +6,12 @@ import { TestMissingUsername, TestUsername } from 'test/serverFixtures';
 export function expectEmptyState(): void {
   expect(screen.queryAllByRole('heading')).toHaveLength(1);
   expect(getSubHeading()).toHaveTextContent('Type a username');
+  expect(screen.queryByTestId('loader')).toBeNull();
+}
+
+export function expectLoader(): void {
+  expect(screen.queryByRole('heading')).toBeNull();
+  expect(screen.queryAllByTestId('loader')).toHaveLength(1);
 }
 
 export function expectTopRepositories(repositories: { name: string; url: string }[]): void {

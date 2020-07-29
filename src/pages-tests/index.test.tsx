@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Index from '../../pages/index';
 import {
   expectEmptyState,
+  expectLoader,
   expectTopRepositories,
   getMainHeading,
   typeUsernameAndSubmit,
@@ -21,6 +22,10 @@ it('displays the user profile after submitting the username', async () => {
   typeUsernameAndSubmit('basic');
 
   expectEmptyState();
+
+  await waitFor(() => {
+    expectLoader();
+  });
 
   await waitFor(() => {
     expect(getMainHeading()).toHaveTextContent('Foo Bar');

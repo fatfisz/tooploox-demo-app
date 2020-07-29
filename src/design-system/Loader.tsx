@@ -9,7 +9,7 @@ export function Loader(): ReactElement {
   const theme = useTheme();
   return (
     <>
-      <div>
+      <div data-testid="loader">
         <svg viewBox={`0 0 ${size} ${size}`}>
           <path
             d={`

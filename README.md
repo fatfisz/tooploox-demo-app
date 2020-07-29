@@ -11,6 +11,15 @@ Once you have that, run this command in the project root directory:
 yarn
 ```
 
+**Important** - you'll also need a GitHub app key.
+You can read about how to generate it on [the GitHub documentation page](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+
+Put the key inside a file called `auth.json` in the root of the app; it should look like this:
+```json
+"Basic XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+```
+where "XXX..." is your app key.
+
 Once that is done, start the app with this command:
 
 ```sh

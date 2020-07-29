@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Index from '../../pages/index';
 import {
   expectEmptyState,
+  expectErrorState,
   expectLoader,
   expectTopRepositories,
   getMainHeading,
@@ -34,5 +35,20 @@ it('displays the user profile after submitting the username', async () => {
       { name: 'TypeScript', url: 'https://github.com/microsoft/typescript' },
       { name: 'eslint', url: 'https://github.com/eslint/eslint' },
     ]);
+  });
+});
+
+it('displays an error message when the user does not exist', async () => {
+  render(<Index />);
+  typeUsernameAndSubmit('missing-user');
+
+  expectEmptyState();
+
+  await waitFor(() => {
+    expectLoader();
+  });
+
+  await waitFor(() => {
+    expectErrorState();
   });
 });

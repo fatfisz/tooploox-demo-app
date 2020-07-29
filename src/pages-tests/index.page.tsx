@@ -9,6 +9,12 @@ export function expectEmptyState(): void {
   expect(screen.queryByTestId('loader')).toBeNull();
 }
 
+export function expectErrorState(): void {
+  expect(screen.queryAllByRole('heading')).toHaveLength(1);
+  expect(getSubHeading()).toHaveTextContent('An error occurred');
+  expect(screen.queryByTestId('loader')).toBeNull();
+}
+
 export function expectLoader(): void {
   expect(screen.queryByRole('heading')).toBeNull();
   expect(screen.queryAllByTestId('loader')).toHaveLength(1);

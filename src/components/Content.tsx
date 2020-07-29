@@ -40,6 +40,13 @@ function ContentBody({
   repositories: QueryResult<UserRepositoriesData>;
   userInfo: QueryResult<UserInfoData>;
 }): ReactElement {
+  if (userInfo.status === 'error' || repositories.status === 'error') {
+    return (
+      <Heading align="center" level={2}>
+        An error occurred while retrieving the profile
+      </Heading>
+    );
+  }
   if (userInfo.status === 'idle' || repositories.status === 'idle') {
     return (
       <Heading align="center" level={2}>

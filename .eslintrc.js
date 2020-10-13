@@ -1,60 +1,38 @@
 'use strict';
 
+const path = require('path');
+
 module.exports = {
   root: true,
+  extends: ['fatfisz'],
   settings: {
-    react: {
-      version: 'detect',
+    'import/resolver': {
+      [path.resolve('./eslint-import-resolver')]: true,
     },
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'prettier',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-  ],
-  parser: '@typescript-eslint/parser',
-  plugins: ['prettier', '@typescript-eslint'],
   rules: {
-    'no-useless-rename': 'warn',
-    'object-shorthand': 'warn',
-    strict: 'warn',
-
-    'prettier/prettier': [
+    'import/extensions': [
       'warn',
+      'always',
       {
-        printWidth: 100,
-        singleQuote: true,
-        trailingComma: 'all',
+        ignorePackages: true,
+        pattern: {
+          tsx: 'never',
+        },
       },
     ],
-
-    'react/prop-types': 'off', // We're using TS for prop validation
-    'react/react-in-jsx-scope': 'off', // Next.js injects React so we don't have to check that
-
-    '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/consistent-type-definitions': ['warn', 'interface'],
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/explicit-': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
   },
   overrides: [
     {
-      files: ['**/*.js'],
-      parserOptions: {
-        sourceType: 'script',
-      },
+      files: '**/*.js',
       env: {
         node: true,
       },
+    },
+    {
+      files: ['__mocks__/**', 'pages/**'],
       rules: {
-        '@typescript-eslint/consistent-type-definitions': 'off',
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-var-requires': 'off',
+        'import/no-default-export': 'off',
       },
     },
   ],

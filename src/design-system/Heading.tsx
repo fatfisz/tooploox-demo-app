@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { ReactElement, ReactNode, createElement } from 'react';
+import { createElement, ReactElement, ReactNode } from 'react';
 import css from 'styled-jsx/css';
 
 import { useTextStyles } from 'design-system/Theme';

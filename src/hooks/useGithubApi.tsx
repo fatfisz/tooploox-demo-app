@@ -6,6 +6,7 @@
 import { useEffect, useState } from 'react';
 
 import authorizationHeader from '../../auth.json';
+
 import { QueryResult } from 'types/QueryResult';
 
 const headers = new Headers([
@@ -67,7 +68,5 @@ export function useGithubApi<Result>({
 }
 
 function getInitialQueryResult<Result>(): QueryResult<Result> {
-  return {
-    status: 'idle',
-  };
+  return { status: 'idle' };
 }

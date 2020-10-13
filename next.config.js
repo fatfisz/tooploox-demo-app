@@ -13,7 +13,7 @@ const moduleTest = String.raw`/\.(tsx|ts|js|mjs|jsx)$/`;
 
 function addSvgRule(config) {
   const moduleRule = config.module.rules.find((rule) => String(rule.test) === moduleTest);
-  assert.notEqual(
+  assert.notStrictEqual(
     moduleRule,
     undefined,
     'Could not find the main module rule (check the regular expression)',

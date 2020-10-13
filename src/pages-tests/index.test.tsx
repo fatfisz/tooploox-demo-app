@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
 import Index from '../../pages/index';
+
 import {
   expectDescription,
   expectEmptyState,
@@ -26,11 +27,7 @@ it('displays the user profile after submitting the username', async () => {
   render(<Index />);
   typeUsernameAndSubmit('basic');
 
-  expectEmptyState();
-
-  await waitFor(() => {
-    expectLoader();
-  });
+  expectLoader();
 
   await waitFor(() => {
     expectUserName('Foo Bar');
@@ -86,11 +83,7 @@ it('displays an error message when the user does not exist', async () => {
   render(<Index />);
   typeUsernameAndSubmit('missing-user');
 
-  expectEmptyState();
-
-  await waitFor(() => {
-    expectLoader();
-  });
+  expectLoader();
 
   await waitFor(() => {
     expectNotFoundErrorState();
@@ -101,11 +94,7 @@ it('displays an error message when a server error occurs', async () => {
   render(<Index />);
   typeUsernameAndSubmit('server-error');
 
-  expectEmptyState();
-
-  await waitFor(() => {
-    expectLoader();
-  });
+  expectLoader();
 
   await waitFor(() => {
     expectServerErrorState();

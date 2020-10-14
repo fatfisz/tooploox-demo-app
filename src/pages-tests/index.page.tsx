@@ -23,7 +23,9 @@ export function expectServerErrorState(): void {
 
 export function expectLoader(): void {
   expect(screen.queryByRole('heading')).toBeNull();
-  expect(screen.queryAllByTestId('loader')).toHaveLength(1);
+  expect(
+    screen.queryAllByTestId('loader').filter((element) => element.style.display !== 'none'),
+  ).toHaveLength(1);
 }
 
 export function expectUserName(name: string): void {

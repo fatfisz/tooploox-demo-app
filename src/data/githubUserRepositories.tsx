@@ -10,8 +10,10 @@
  * repos, and then the most popular ones are picked among them.
  */
 
-import { useGithubApi } from 'hooks/useGithubApi';
-import { QueryResult } from 'types/QueryResult';
+import { selector } from 'recoil';
+
+import { getGithubApiSelector } from './githubApi';
+import { loginAtom } from './login';
 
 type RawUserRepositoriesData = {
   html_url: string;
@@ -31,15 +33,21 @@ const queryParams = new URLSearchParams({
   sort: 'updated',
 });
 
-export function useGithubUserRepositories(
-  login: string | undefined,
-): QueryResult<UserRepositoriesData> {
-  return useGithubApi({
-    url: `https://api.github.com/users/${encodeURIComponent(String(login))}/repos?${queryParams}`,
-    processData,
-    enabled: login,
-  });
-}
+const urlSelector = selector({
+  key: 'github-user-repositories-url-selector',
+  get: ({ get }) => {
+    const login = get(loginAtom);
+    return login
+      ? `https://api.github.com/users/${encodeURIComponent(String(login))}/repos?${queryParams}`
+      : undefined;
+  },
+});
+
+export const githubUserRepositoriesSelector = getGithubApiSelector({
+  key: 'github-user-repositories-selector',
+  urlValue: urlSelector,
+  processData,
+});
 
 function processData(repositories: RawUserRepositoriesData): UserRepositoriesData {
   return repositories

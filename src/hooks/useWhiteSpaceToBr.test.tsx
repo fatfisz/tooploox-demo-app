@@ -7,11 +7,17 @@ it('returns words from the name separated with <br>', () => {
 
   expect(result.current).toMatchInlineSnapshot(`
     Array [
-      "Foo",
-      <br />,
-      "Bar",
-      <br />,
-      "Baz",
+      <React.Fragment>
+        Foo
+      </React.Fragment>,
+      <React.Fragment>
+        <br />
+        Bar
+      </React.Fragment>,
+      <React.Fragment>
+        <br />
+        Baz
+      </React.Fragment>,
     ]
   `);
 });
@@ -21,9 +27,13 @@ it('trims the surrounding whitespace', () => {
 
   expect(result.current).toMatchInlineSnapshot(`
     Array [
-      "Foo",
-      <br />,
-      "Bar",
+      <React.Fragment>
+        Foo
+      </React.Fragment>,
+      <React.Fragment>
+        <br />
+        Bar
+      </React.Fragment>,
     ]
   `);
 });
@@ -33,9 +43,13 @@ it('collapses multiple spaces into one', () => {
 
   expect(result.current).toMatchInlineSnapshot(`
     Array [
-      "Foo",
-      <br />,
-      "Bar",
+      <React.Fragment>
+        Foo
+      </React.Fragment>,
+      <React.Fragment>
+        <br />
+        Bar
+      </React.Fragment>,
     ]
   `);
 });
@@ -43,9 +57,5 @@ it('collapses multiple spaces into one', () => {
 it('returns an empty value for an empty name', () => {
   const { result } = renderHook(() => useWhitespaceToBr(''));
 
-  expect(result.current).toMatchInlineSnapshot(`
-    Array [
-      "",
-    ]
-  `);
+  expect(result.current).toMatchInlineSnapshot(`""`);
 });

@@ -1,5 +1,13 @@
 import { ReactElement } from 'react';
+import { useRecoilValue } from 'recoil';
 
+import { ContentErrorBoundary } from './ContentErrorBoundary';
+import { Login } from './Login';
+import { SafeSuspense } from './SafeSuspense';
+import { WhitespaceToBr } from './WhitespaceToBr';
+
+import { githubUserInfoSelector } from 'data/githubUserInfo';
+import { githubUserRepositoriesSelector, UserRepositoryData } from 'data/githubUserRepositories';
 import {
   Box,
   Column,
@@ -13,57 +21,48 @@ import {
   Stack,
   Text,
 } from 'design-system';
-import { useGithubUserInfo, UserInfoData } from 'hooks/useGithubUserInfo';
-import {
-  useGithubUserRepositories,
-  UserRepositoriesData,
-  UserRepositoryData,
-} from 'hooks/useGithubUserRepositories';
-import { useWhitespaceToBr } from 'hooks/useWhitespaceToBr';
-import { QueryResult } from 'types/QueryResult';
 
-export function Content({ login }: { login: string | undefined }): ReactElement {
-  const userInfo = useGithubUserInfo(login);
-  const repositories = useGithubUserRepositories(login);
+export function Content(): ReactElement | null {
   return (
     <Box padding="medium">
       <ContentBlock>
-        <ContentBody login={login} userInfo={userInfo} repositories={repositories} />
+        <ContentErrorBoundary ErrorComponent={ContentError}>
+          <Stack space="large">
+            <SafeSuspense fallback={<Loader />}>
+              <UserInfo />
+              <SafeSuspense fallback={<Loader />}>
+                <UserRepositories />
+              </SafeSuspense>
+            </SafeSuspense>
+          </Stack>
+        </ContentErrorBoundary>
       </ContentBlock>
     </Box>
   );
 }
 
-function ContentBody({
-  login,
-  repositories,
-  userInfo,
-}: {
-  login: string | undefined;
-  repositories: QueryResult<UserRepositoriesData>;
-  userInfo: QueryResult<UserInfoData>;
-}): ReactElement {
-  if (userInfo.status === 'error' || repositories.status === 'error') {
-    const isUserInfoMissingOrNotError =
-      userInfo.error?.response?.status === 404 || userInfo.status !== 'error';
-    const isUserRepositoriesMissingOrNotError =
-      repositories.error?.response?.status === 404 || repositories.status !== 'error';
-    if (isUserInfoMissingOrNotError && isUserRepositoriesMissingOrNotError) {
-      return (
-        <Heading align="center" level={2}>
-          User &quot;{login}&quot; could not be found 😔
-          <br />
-          Try some other username, eg. &quot;kentcdodds&quot;
-        </Heading>
-      );
-    }
+function ContentError({ error }: { error?: any }): ReactElement {
+  if (error.response?.status === 404) {
     return (
       <Heading align="center" level={2}>
-        An error occurred while retrieving the profile
+        User &quot;
+        <Login />
+        &quot; could not be found 😔
+        <br />
+        Try some other username, eg. &quot;kentcdodds&quot;
       </Heading>
     );
   }
-  if (userInfo.status === 'idle' || repositories.status === 'idle') {
+  return (
+    <Heading align="center" level={2}>
+      An error occurred while retrieving the profile
+    </Heading>
+  );
+}
+
+function UserInfo(): ReactElement {
+  const userInfo = useRecoilValue(githubUserInfoSelector);
+  if (!userInfo) {
     return (
       <Heading align="center" level={2}>
         Type a username and click &quot;Search&quot; to get information{' '}
@@ -71,39 +70,28 @@ function ContentBody({
       </Heading>
     );
   }
-  if (userInfo.status === 'loading') {
-    return <Loader />;
-  }
-  return (
-    <Stack space="large">
-      <UserInfo {...userInfo.data!} />
-      {repositories.status === 'loading' ? (
-        <Loader />
-      ) : (
-        <UserRepositories repositories={repositories.data!} />
-      )}
-    </Stack>
-  );
-}
-
-function UserInfo({ avatarUrl, description, name }: UserInfoData): ReactElement | null {
-  const splitName = useWhitespaceToBr(name);
   return (
     <Stack space="medium">
       <Columns alignY="bottom" space="small">
         <Column width="content">
-          <Image alt="user avatar" borderRadius="large" size="avatar" src={avatarUrl} />
+          <Image alt="user avatar" borderRadius="large" size="avatar" src={userInfo.avatarUrl} />
         </Column>
         <Column>
-          <Heading level={1}>{splitName}</Heading>
+          <Heading level={1}>
+            <WhitespaceToBr>{userInfo.name}</WhitespaceToBr>
+          </Heading>
         </Column>
       </Columns>
-      {description && <Text data-testid="description">{description}</Text>}
+      {userInfo.description && <Text data-testid="description">{userInfo.description}</Text>}
     </Stack>
   );
 }
 
-function UserRepositories({ repositories }: { repositories: UserRepositoriesData }): ReactElement {
+function UserRepositories(): ReactElement | null {
+  const repositories = useRecoilValue(githubUserRepositoriesSelector);
+  if (!repositories) {
+    return null;
+  }
   if (repositories.length === 0) {
     return <Heading level={2}>No repositories found for this user</Heading>;
   }

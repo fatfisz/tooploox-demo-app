@@ -25,6 +25,10 @@ export function Loader(): ReactElement {
       </div>
       <style jsx>{`
         div {
+          animation-delay: 1s;
+          animation-duration: 100ms;
+          animation-name: fadeIn;
+          animation-fill-mode: both;
           display: flex;
           justify-content: center;
         }
@@ -36,6 +40,15 @@ export function Loader(): ReactElement {
           animation-timing-function: cubic-bezier(0.6, 0.4, 0.6, 0.8);
           height: ${size}px;
           width: ${size}px;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         @keyframes spin {

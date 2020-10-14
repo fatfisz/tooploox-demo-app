@@ -1,16 +1,24 @@
-import { Children, ReactElement, ReactNode, useMemo } from 'react';
+import { Children, ReactNode, useMemo } from 'react';
 
-export function useWhitespaceToBr(string: string): ReactNode {
+export function useWhitespaceToBr(string: string | undefined): ReactNode {
   return useMemo(() => {
+    if (!string) {
+      return string;
+    }
     const parts = string.trim().split(/\s+/);
     const partsWithBr = parts.reduce(
       (partsWithBr, part, index) => {
         if (index > 0) {
-          partsWithBr.push(<br />, part);
+          partsWithBr.push(
+            <>
+              <br />
+              {part}
+            </>,
+          );
         }
         return partsWithBr;
       },
-      [parts[0]] as (string | ReactElement)[],
+      [<>{parts[0]}</>],
     );
     return Children.toArray(partsWithBr);
   }, [string]);

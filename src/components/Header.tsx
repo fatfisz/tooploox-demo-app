@@ -1,14 +1,14 @@
 import { ReactElement, useCallback, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
+import { contentErrorAtom } from './ContentErrorBoundary';
+
+import { loginAtom } from 'data/login';
 import { Box, Button, Column, Columns, ContentBlock, Form, TextInput } from 'design-system';
 
-export function Header({
-  onLoginChange,
-}: {
-  onLoginChange: (value: string) => void;
-}): ReactElement {
+export function Header(): ReactElement {
   const [value, setValue] = useState('');
-  const onSubmit = useLoginSubmitHandler(value, onLoginChange);
+  const onSubmit = useLoginSubmitHandler(value);
   return (
     <Form onSubmit={onSubmit}>
       <Box background="panelBackground" padding="medium" shadow="basic">
@@ -27,8 +27,11 @@ export function Header({
   );
 }
 
-function useLoginSubmitHandler(value: string, onLoginChange: (value: string) => void): () => void {
+function useLoginSubmitHandler(value: string): () => void {
+  const onLoginChange = useSetRecoilState(loginAtom);
+  const setError = useSetRecoilState(contentErrorAtom);
   return useCallback(() => {
     onLoginChange(value);
-  }, [value, onLoginChange]);
+    setError(undefined);
+  }, [onLoginChange, setError, value]);
 }

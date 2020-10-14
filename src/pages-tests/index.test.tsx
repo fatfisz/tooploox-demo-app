@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { RecoilRoot } from 'recoil';
 
 import Index from '../../pages/index';
 
@@ -15,8 +16,8 @@ import {
   typeUsernameAndSubmit,
 } from 'pages-tests/index.page';
 
-it('initially displays a textbox, a submit button, and an empty state message', () => {
-  render(<Index />);
+it('initially displays a textbox, a submit button, and an empty state message', async () => {
+  renderPage();
 
   expect(screen.queryAllByRole('textbox')).toHaveLength(1);
   expect(screen.queryAllByRole('button')).toHaveLength(1);
@@ -24,7 +25,7 @@ it('initially displays a textbox, a submit button, and an empty state message', 
 });
 
 it('displays the user profile after submitting the username', async () => {
-  render(<Index />);
+  renderPage();
   typeUsernameAndSubmit('basic');
 
   expectLoader();
@@ -42,7 +43,7 @@ it('displays the user profile after submitting the username', async () => {
 
 describe('profile edge cases', () => {
   it('displays a user with only one repository', async () => {
-    render(<Index />);
+    renderPage();
     typeUsernameAndSubmit('one-repo');
 
     await waitFor(() => {
@@ -53,7 +54,7 @@ describe('profile edge cases', () => {
   });
 
   it('displays a user with no repositories', async () => {
-    render(<Index />);
+    renderPage();
     typeUsernameAndSubmit('no-repos');
 
     await waitFor(() => {
@@ -64,7 +65,7 @@ describe('profile edge cases', () => {
   });
 
   it('displays a user without a description', async () => {
-    render(<Index />);
+    renderPage();
     typeUsernameAndSubmit('missing-bio');
 
     await waitFor(() => {
@@ -80,7 +81,7 @@ describe('profile edge cases', () => {
 });
 
 it('displays an error message when the user does not exist', async () => {
-  render(<Index />);
+  renderPage();
   typeUsernameAndSubmit('missing-user');
 
   expectLoader();
@@ -91,7 +92,7 @@ it('displays an error message when the user does not exist', async () => {
 });
 
 it('displays an error message when a server error occurs', async () => {
-  render(<Index />);
+  renderPage();
   typeUsernameAndSubmit('server-error');
 
   expectLoader();
@@ -100,3 +101,11 @@ it('displays an error message when a server error occurs', async () => {
     expectServerErrorState();
   });
 });
+
+function renderPage(): void {
+  render(
+    <RecoilRoot>
+      <Index />
+    </RecoilRoot>,
+  );
+}

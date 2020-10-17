@@ -1,24 +1,26 @@
-import { ReactElement, ReactNode } from 'react';
+import { ComponentProps, ReactElement, ReactNode } from 'react';
 
-import { Spacing, useTheme } from 'design-system/Theme';
+import { getVariants, styled } from './styled';
 
-export function Stack({ children, space }: { children: ReactNode; space?: Spacing }): ReactElement {
-  const theme = useTheme();
-  return (
-    <>
-      <div>{children}</div>
-      <style jsx>
-        {`
-          div {
-            display: flex;
-            flex-direction: column;
-          }
-
-          div > :global(*:not(:first-child)) {
-            margin-top: ${space && theme.spacing[space]};
-          }
-        `}
-      </style>
-    </>
-  );
+export function Stack({
+  children,
+  space,
+}: {
+  children: ReactNode;
+  space?: ComponentProps<typeof StyledStack>['space'];
+}): ReactElement {
+  return <StyledStack space={space}>{children}</StyledStack>;
 }
+
+const StyledStack = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+
+  variants: {
+    ...getVariants('space', 'space', (value) => ({
+      '& > *:not(:first-child)': {
+        marginTop: value,
+      },
+    })),
+  },
+});

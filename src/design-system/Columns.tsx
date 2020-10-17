@@ -1,39 +1,37 @@
-import { ReactElement, ReactNode } from 'react';
+import { ComponentProps, ReactElement, ReactNode } from 'react';
 
-import { Spacing, useTheme } from 'design-system/Theme';
-
-const alignYToAlignItems = {
-  bottom: 'flex-end',
-  center: 'center',
-  top: 'flex-start',
-};
+import { getVariants, styled } from './styled';
 
 export function Columns({
   alignY = 'top',
   children,
   space,
 }: {
-  alignY?: keyof typeof alignYToAlignItems;
+  alignY?: ComponentProps<typeof StyledColumns>['alignY'];
   children: ReactNode;
-  space?: Spacing;
+  space?: ComponentProps<typeof StyledColumns>['space'];
 }): ReactElement {
-  const theme = useTheme();
   return (
-    <>
-      <div>{children}</div>
-      <style jsx>
-        {`
-          div {
-            align-items: ${alignYToAlignItems[alignY]};
-            display: flex;
-            flex-direction: row;
-          }
-
-          div > :global(*:not(:first-child)) {
-            margin-left: ${space && theme.spacing[space]};
-          }
-        `}
-      </style>
-    </>
+    <StyledColumns alignY={alignY} space={space}>
+      {children}
+    </StyledColumns>
   );
 }
+
+const StyledColumns = styled('div', {
+  display: 'flex',
+  flexDirection: 'row',
+
+  variants: {
+    alignY: {
+      bottom: { alignItems: 'flex-end' },
+      center: { alignItems: 'center' },
+      top: { alignItems: 'flex-start' },
+    },
+    ...getVariants('space', 'space', (value) => ({
+      '& > *:not(:first-child)': {
+        marginLeft: value,
+      },
+    })),
+  },
+});

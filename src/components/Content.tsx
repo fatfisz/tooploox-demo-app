@@ -13,10 +13,11 @@ import {
   Column,
   Columns,
   ContentBlock,
-  Heading,
   Image,
+  LargeHeading,
   Link,
   Loader,
+  MediumHeading,
   NoBreak,
   Stack,
   Text,
@@ -44,19 +45,17 @@ export function Content(): ReactElement | null {
 function ContentError({ error }: { error?: any }): ReactElement {
   if (error.response?.status === 404) {
     return (
-      <Heading align="center" level={2}>
+      <MediumHeading align="center">
         User &quot;
         <Login />
         &quot; could not be found 😔
         <br />
         Try some other username, eg. &quot;kentcdodds&quot;
-      </Heading>
+      </MediumHeading>
     );
   }
   return (
-    <Heading align="center" level={2}>
-      An error occurred while retrieving the profile
-    </Heading>
+    <MediumHeading align="center">An error occurred while retrieving the profile</MediumHeading>
   );
 }
 
@@ -64,10 +63,10 @@ function UserInfo(): ReactElement {
   const userInfo = useRecoilValue(githubUserInfoSelector);
   if (!userInfo) {
     return (
-      <Heading align="center" level={2}>
+      <MediumHeading align="center">
         Type a username and click &quot;Search&quot; to get information{' '}
         <NoBreak>about a GitHub user</NoBreak>
-      </Heading>
+      </MediumHeading>
     );
   }
   return (
@@ -77,9 +76,9 @@ function UserInfo(): ReactElement {
           <Image alt="user avatar" borderRadius="large" size="avatar" src={userInfo.avatarUrl} />
         </Column>
         <Column>
-          <Heading level={1}>
+          <LargeHeading>
             <WhitespaceToBr>{userInfo.name}</WhitespaceToBr>
-          </Heading>
+          </LargeHeading>
         </Column>
       </Columns>
       {userInfo.description && <Text data-testid="description">{userInfo.description}</Text>}
@@ -93,11 +92,11 @@ function UserRepositories(): ReactElement | null {
     return null;
   }
   if (repositories.length === 0) {
-    return <Heading level={2}>No repositories found for this user</Heading>;
+    return <MediumHeading>No repositories found for this user</MediumHeading>;
   }
   return (
     <Stack space="medium">
-      <Heading level={2}>Top repositories</Heading>
+      <MediumHeading>Top repositories</MediumHeading>
       <Stack space="small">
         {repositories.map(({ name, url }) => (
           <Repository key={url} name={name} url={url} />

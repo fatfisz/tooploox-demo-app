@@ -1,14 +1,11 @@
 import { ReactElement, ReactNode } from 'react';
 
+import { styled } from './styled';
+
 export function NoBreak({ children }: { children: ReactNode }): ReactElement {
-  return (
-    <>
-      <span>{children}</span>
-      <style jsx>{`
-        span {
-          white-space: nowrap;
-        }
-      `}</style>
-    </>
-  );
+  return <StyledNoBreak>{children}</StyledNoBreak>;
 }
+
+const StyledNoBreak = styled('span', {
+  whiteSpace: 'nowrap',
+});

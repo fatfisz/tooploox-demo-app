@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode } from 'react';
+import { ComponentProps, ReactElement, ReactNode } from 'react';
 
-import { BorderRadius, Color, Shadow, Spacing, useTheme } from 'design-system/Theme';
+import { getVariants, styled } from './styled';
 
 export function Box({
   background,
@@ -9,23 +9,29 @@ export function Box({
   padding,
   shadow,
 }: {
-  background?: Color;
-  borderRadius?: BorderRadius;
+  background?: ComponentProps<typeof StyledBox>['background'];
+  borderRadius?: ComponentProps<typeof StyledBox>['borderRadius'];
   children: ReactNode;
-  padding?: Spacing;
-  shadow?: Shadow;
+  padding?: ComponentProps<typeof StyledBox>['padding'];
+  shadow?: ComponentProps<typeof StyledBox>['shadow'];
 }): ReactElement {
-  const theme = useTheme();
   return (
-    <div
-      style={{
-        background: background && theme.color[background],
-        borderRadius: borderRadius && theme.borderRadius[borderRadius],
-        boxShadow: shadow && theme.shadow[shadow],
-        padding: padding && theme.spacing[padding],
-      }}
+    <StyledBox
+      background={background}
+      borderRadius={borderRadius}
+      padding={padding}
+      shadow={shadow}
     >
       {children}
-    </div>
+    </StyledBox>
   );
 }
+
+const StyledBox = styled('div', {
+  variants: {
+    ...getVariants('colors', 'background', 'backgroundColor'),
+    ...getVariants('radii', 'borderRadius'),
+    ...getVariants('shadows', 'shadow', 'boxShadow'),
+    ...getVariants('space', 'padding'),
+  },
+});

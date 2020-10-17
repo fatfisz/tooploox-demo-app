@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
+import { ComponentProps, ReactElement } from 'react';
 
-import { BorderRadius, Size, useTheme } from 'design-system/Theme';
+import { getVariants, styled } from './styled';
 
 export function Image({
   alt,
@@ -9,20 +9,21 @@ export function Image({
   src,
 }: {
   alt: string;
-  borderRadius?: BorderRadius;
-  size: Size;
+  borderRadius?: ComponentProps<typeof StyledImage>['borderRadius'];
+  size: ComponentProps<typeof StyledImage>['size'];
   src: string;
 }): ReactElement {
-  const theme = useTheme();
-  return (
-    <img
-      alt={alt}
-      src={src}
-      style={{
-        borderRadius: borderRadius && theme.borderRadius[borderRadius],
-        maxHeight: theme.size[size],
-        maxWidth: theme.size[size],
-      }}
-    />
-  );
+  return <StyledImage alt={alt} borderRadius={borderRadius} size={size} src={src} />;
 }
+
+const StyledImage = styled('img', {
+  display: 'block',
+
+  variants: {
+    ...getVariants('radii', 'borderRadius'),
+    ...getVariants('sizes', 'size', (value) => ({
+      maxHeight: value,
+      maxWidth: value,
+    })),
+  },
+});

@@ -1,38 +1,47 @@
-import cx from 'classnames';
-import { createElement, ReactElement, ReactNode } from 'react';
-import css from 'styled-jsx/css';
+import { ComponentProps, ReactElement, ReactNode } from 'react';
 
-import { useTextStyles } from 'design-system/Theme';
+import { styled } from './styled';
 
-const headingStyles = css.resolve`
-  display: block;
-  margin: 0;
-`;
-
-export function Heading({
-  align = 'left',
-  children,
-  level,
-}: {
-  align?: 'left' | 'right' | 'center';
+interface Props {
+  align?: ComponentProps<typeof StyledHeading>['align'];
   children: ReactNode;
-  level: 1 | 2 | 3 | 4 | 5 | 6;
-}): ReactElement {
-  const textStyles = useTextStyles('heading');
+}
+
+export function LargeHeading({ align = 'left', children }: Props): ReactElement {
   return (
-    <>
-      {createElement(
-        `h${level}`,
-        {
-          className: cx(headingStyles.className, textStyles.className),
-          style: {
-            textAlign: align,
-          },
-        },
-        children,
-      )}
-      {headingStyles.styles}
-      {textStyles.styles}
-    </>
+    <StyledHeading as="h1" align={align}>
+      {children}
+    </StyledHeading>
   );
 }
+
+export function MediumHeading({ align = 'left', children }: Props): ReactElement {
+  return (
+    <StyledHeading as="h2" align={align}>
+      {children}
+    </StyledHeading>
+  );
+}
+
+export function SmallHeading({ align = 'left', children }: Props): ReactElement {
+  return (
+    <StyledHeading as="h3" align={align}>
+      {children}
+    </StyledHeading>
+  );
+}
+
+const StyledHeading = styled('span', {
+  color: 'textHighEmphasis',
+  display: 'block',
+  margin: 0,
+  text: 'heading',
+
+  variants: {
+    align: {
+      left: { textAlign: 'left' },
+      right: { textAlign: 'right' },
+      center: { textAlign: 'center' },
+    },
+  },
+});

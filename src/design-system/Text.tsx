@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 
-import { useTextStyles } from 'design-system/Theme';
+import { styled } from './styled';
 
 export function Text({
   children,
@@ -9,18 +9,10 @@ export function Text({
   children: ReactNode;
   'data-testid'?: string;
 }): ReactElement {
-  const textStyles = useTextStyles('basic');
-  return (
-    <>
-      <span className={textStyles.className} data-testid={dataTestid}>
-        {children}
-      </span>
-      <style jsx>{`
-        span {
-          display: block;
-        }
-      `}</style>
-      {textStyles.styles}
-    </>
-  );
+  return <StyledText data-testid={dataTestid}>{children}</StyledText>;
 }
+
+const StyledText = styled('span', {
+  display: 'block',
+  text: 'basic',
+});

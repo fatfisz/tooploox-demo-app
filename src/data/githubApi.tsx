@@ -19,7 +19,7 @@ export function getGithubApiSelector<Result>({
 }: {
   key: string;
   urlValue: RecoilValue<string | undefined>;
-  processData?: (data: any) => Result;
+  processData?: (data: unknown) => Result;
 }): RecoilValueReadOnly<Result | undefined> {
   return selector({
     key: `get-github-api/${key}-selector`,
@@ -34,7 +34,7 @@ export function getGithubApiSelector<Result>({
 
 async function fetchAndProcess<Result>(
   url: string,
-  processData?: (data: any) => Result,
+  processData?: (data: unknown) => Result,
 ): Promise<Result> {
   const response = await fetch(url, { headers });
 

@@ -42,8 +42,8 @@ export function Content(): ReactElement | null {
   );
 }
 
-function ContentError({ error }: { error?: any }): ReactElement {
-  if (error.response?.status === 404) {
+function ContentError({ error }: { error?: unknown }): ReactElement {
+  if (Object(error).response?.status === 404) {
     return (
       <MediumHeading align="center">
         User &quot;

@@ -35,7 +35,8 @@ export const githubUserInfoSelector = getGithubApiSelector({
   processData,
 });
 
-function processData({ avatar_url, bio, name }: RawUserInfoData): UserInfoData {
+function processData(data: unknown): UserInfoData {
+  const { avatar_url, bio, name } = data as RawUserInfoData;
   return {
     avatarUrl: avatar_url,
     description: bio,

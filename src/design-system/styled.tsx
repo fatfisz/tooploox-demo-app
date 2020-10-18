@@ -66,14 +66,15 @@ type TokenNames<Token extends Tokens> = keyof typeof defaultTokens[Token];
 
 type Fonts = TokenNames<'fonts'>;
 
+type VariantDeclaration = NonNullable<Parameters<typeof styled>[1]['variants']>[string][string];
+
 export const { styled, css } = createStyled({
-  // strict: true,
   tokens: defaultTokens,
   utils: {
     controlIcon: (
       [size, horzPadding]: [size: TokenNames<'sizes'>, horzPadding: TokenNames<'space'>],
       config,
-    ): any => ({
+    ) => ({
       display: 'flex',
       left: 0,
       padding: `0 ${horzPadding}`,
@@ -86,7 +87,7 @@ export const { styled, css } = createStyled({
     controlIconPaddingLeft: (
       [size, horzPadding]: [size: TokenNames<'sizes'>, horzPadding: TokenNames<'space'>],
       config,
-    ): any => ({
+    ) => ({
       paddingLeft: `calc(${config.tokens.sizes[size]} + 2 * ${config.tokens.space[horzPadding]})`,
     }),
 
@@ -99,15 +100,13 @@ export const { styled, css } = createStyled({
             horzPadding: TokenNames<'space'>,
           ],
       config,
-    ): any => {
-      return {
-        height: size,
-        lineHeight: `calc(${config.tokens.sizes[size]} - 2 * ${config.tokens.space[vertPadding]})`,
-        padding: `${vertPadding} ${horzPadding}`,
-      };
-    },
+    ) => ({
+      height: size,
+      lineHeight: `calc(${config.tokens.sizes[size]} - 2 * ${config.tokens.space[vertPadding]})`,
+      padding: `${vertPadding} ${horzPadding}`,
+    }),
 
-    text: (value: Fonts | { font: Fonts; ignoreLineHeight?: boolean }): any => {
+    text: (value: Fonts | { font: Fonts; ignoreLineHeight?: boolean }) => {
       const { font, ignoreLineHeight = false } =
         typeof value === 'string' ? { font: value } : value;
       return {
@@ -124,19 +123,19 @@ export const { styled, css } = createStyled({
 export function getVariants<Token extends Tokens, PropName extends string>(
   token: Token,
   propName: PropName,
-  propNameOrTransform: string | ((value: TokenNames<Token>) => any) = propName,
-): Record<PropName, Record<TokenNames<Token>, any>> {
-  return ({
+  propNameOrTransform: string | ((value: TokenNames<Token>) => VariantDeclaration) = propName,
+): Record<PropName, Record<TokenNames<Token>, VariantDeclaration>> {
+  return {
     [propName]: mapValues(defaultTokens[token], getCssDeclarationTransform(propNameOrTransform)),
-  } as unknown) as Record<PropName, Record<TokenNames<Token>, any>>;
+  } as Record<PropName, Record<TokenNames<Token>, VariantDeclaration>>;
 }
 
 function getCssDeclarationTransform<Token extends Tokens>(
-  propNameOrTransform: string | ((value: TokenNames<Token>) => any),
-): (value: any, key: TokenNames<Token>) => any {
+  propNameOrTransform: string | ((value: TokenNames<Token>) => VariantDeclaration),
+): (value: unknown, key: TokenNames<Token>) => VariantDeclaration {
   return typeof propNameOrTransform === 'string'
-    ? (value, key): any => ({ [propNameOrTransform]: key })
-    : (value, key): any => propNameOrTransform(key);
+    ? (value, key) => ({ [propNameOrTransform]: key })
+    : (value, key) => propNameOrTransform(key);
 }
 
 function mapValues<Type extends Record<string, unknown>, Value>(

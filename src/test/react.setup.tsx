@@ -4,5 +4,5 @@ import React from 'react';
 global.React = React;
 
 declare global {
-  const React: any;
+  const React: typeof React;
 }

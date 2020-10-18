@@ -8,7 +8,7 @@ export default class Document extends NextDocument {
     const originalRenderPage = ctx.renderPage;
     let extractedStyles: string[];
 
-    ctx.renderPage = (): any => {
+    ctx.renderPage = () => {
       const { styles, result } = css.getStyles(originalRenderPage);
       extractedStyles = styles;
       return result;

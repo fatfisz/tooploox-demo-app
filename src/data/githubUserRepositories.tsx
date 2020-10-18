@@ -49,7 +49,8 @@ export const githubUserRepositoriesSelector = getGithubApiSelector({
   processData,
 });
 
-function processData(repositories: RawUserRepositoriesData): UserRepositoriesData {
+function processData(data: unknown): UserRepositoriesData {
+  const repositories = data as RawUserRepositoriesData;
   return repositories
     .sort((a, b) => b.stargazers_count - a.stargazers_count)
     .slice(0, 3)
